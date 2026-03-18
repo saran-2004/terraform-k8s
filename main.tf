@@ -1,10 +1,7 @@
 provider "kubernetes" {
   config_path = "/home/runner/.kube/config"
 }
-resource "kubernetes_deployment" "nginx" {
-  metadata {
-    name = "nginx-deployment"
-  }
+resource "kubernetes_deployment_v1" "nginx"
 
   spec {
     replicas = 2
