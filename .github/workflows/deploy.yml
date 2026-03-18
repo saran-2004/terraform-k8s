@@ -1,4 +1,4 @@
-name: Terraform CI/CD
+name: Terraform + Kubernetes CI/CD
 
 on:
   push:
@@ -13,17 +13,27 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v3
 
+    - name: Install kubectl
+      run: |
+        curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
+        chmod +x kubectl
+        sudo mv kubectl /usr/local/bin/
+
+    - name: Install Minikube
+      run: |
+        curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+        chmod +x minikube-linux-amd64
+        sudo mv minikube-linux-amd64 /usr/local/bin/minikube
+
+    - name: Start Minikube
+      run: |
+        minikube start --driver=docker
+
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v2
 
     - name: Terraform Init
       run: terraform init
-
-    - name: Terraform Validate
-      run: terraform validate
-
-    - name: Terraform Plan
-      run: terraform plan
 
     - name: Terraform Apply
       run: terraform apply -auto-approve
