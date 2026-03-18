@@ -1,7 +1,6 @@
 provider "kubernetes" {
-  config_path = "~/.kube/config"
+  config_path = "/home/runner/.kube/config"
 }
-
 resource "kubernetes_deployment" "nginx" {
   metadata {
     name = "nginx-deployment"
